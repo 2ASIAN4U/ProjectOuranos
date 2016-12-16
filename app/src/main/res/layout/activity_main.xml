@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    tools:context="tk.sbschools.projectouranos.MainActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/LinearLayout_ChangeActivity">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Current"
+            android:id="@+id/button_current"
+            android:layout_weight=".33"
+            android:background="@android:color/holo_blue_dark"
+            android:alpha="85" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="5 Day"
+            android:id="@+id/button_5day"
+            android:layout_weight=".33"
+            android:background="@android:color/holo_blue_light"
+            android:alpha="85" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Misc."
+            android:id="@+id/button_misc"
+            android:layout_weight=".33"
+            android:background="@android:color/holo_blue_light"
+            android:alpha="85" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/LinearLayout_ChangeActivity"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/LinearLayout_display">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imageView_display"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/loading" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Cloudy With a Chance of Null"
+            android:id="@+id/textView_forcast"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="25dp"
+            android:textSize="25dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Location"
+            android:id="@+id/textView_location"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="25dp"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0°"
+            android:id="@+id/textView_temp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="100dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="20°"
+                android:id="@+id/textView_tempHigh"
+                android:paddingRight="20dp"
+                android:textSize="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="-20°"
+                android:id="@+id/textView_tempLow"
+                android:paddingLeft="20dp"
+                android:textSize="30dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
