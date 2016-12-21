@@ -33,7 +33,8 @@
             android:id="@+id/button_5day"
             android:layout_weight=".33"
             android:background="@android:color/holo_blue_light"
-            android:alpha="85" />
+            android:alpha="85"
+            android:onClick="goto5Day" />
 
         <Button
             android:layout_width="fill_parent"
