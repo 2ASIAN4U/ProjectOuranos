@@ -140,7 +140,7 @@ public class MainActivity5day extends AppCompatActivity {
 
             //super.onPostExecute(result);
             try {
-                for (int i = 0; i < result.getJSONArray("list").length(); i++) { //
+                for (int i = 0; i < 4; i++) { //
                     JSONObject hourlyRes = result.getJSONArray("list").getJSONObject(i);
                     this.forecast.add(hourlyRes.getJSONArray("weather").getJSONObject(0).get("main").toString());
                     this.temp.add(((9 / 5) * ((double) (hourlyRes.getJSONObject("temp").get("day")) - 273.15) + 32));
