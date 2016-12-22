@@ -3,6 +3,7 @@ package tk.sbschools.projectouranos;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -28,11 +30,21 @@ import java.util.List;
 public class MainActivity5day extends AppCompatActivity {
     ArrayList<String> forecast,time;
     ArrayList<Integer> temp,high,low,imageRes;
+    ImageView background;
+
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity5day);
+
+        prefs = this.getPreferences(Context.MODE_PRIVATE);
+        editor = prefs.edit();
+
+        background = (ImageView) findViewById(R.id.ImageView_background);
+        background.setImageResource(R.drawable.rwby6);
 
         WeatherThread retrieveWeatherData = new WeatherThread(this);
         retrieveWeatherData.execute("zip=08852,us");
@@ -76,12 +88,13 @@ public class MainActivity5day extends AppCompatActivity {
             tempHighView.setText(high.get(position).toString() + "°");
             tempLowView.setText(low.get(position).toString() + "°");
             timeView.setText(time.get(position).toString());
-            displayView.setImageResource((int)imageRes.get(position));
+            displayView.setImageResource((int) imageRes.get(position));
             //if(!imageList.isEmpty() && imageList.size()-1 > position){
             //    imageView.setImageBitmap((Bitmap)imageList.get(position));
             //}else {
             //imagecache.add(position,((BitmapDrawable)imageView.getDrawable()).getBitmap());
             //}
+
 
             return layoutView;
         }
@@ -133,19 +146,10 @@ public class MainActivity5day extends AppCompatActivity {
                     this.temp.add(((9 / 5) * ((double) (hourlyRes.getJSONObject("temp").get("day")) - 273.15) + 32));
                     this.high.add((int) ((9 / 5) * ((double) (hourlyRes.getJSONObject("temp").get("max")) - 273.15) + 32));
                     this.low.add((int) ((9 / 5) * ((double) (hourlyRes.getJSONObject("temp").get("min")) - 273.15) + 32));
-                    this.time.add(hourlyRes.get("dt0").toString());
+                    this.time.add(hourlyRes.get("dt").toString());
                     switch ((int) hourlyRes.getJSONArray("weather").getJSONObject(0).get("id")) {
                         //ThunderStorm
-                        case 200:
-                        case 201:
-                        case 202:
-                        case 210:
-                        case 211:
-                        case 212:
-                        case 221:
-                        case 230:
-                        case 231:
-                        case 232:
+                        case 200:case 201:case 202:case 210:case 211:case 212:case 221:case 230:case 231:case 232:
                             this.imageRes.add(R.drawable.storm);
                             break;
                         //Drizzle

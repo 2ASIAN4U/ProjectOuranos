@@ -15,7 +15,8 @@
         android:layout_height="match_parent"
         app:srcCompat="@drawable/code1"
         android:alpha=".4"
-        android:id="@+id/@+id/ImageView_background" />
+        android:id="@+id/ImageView_background"
+        android:scaleType="fitEnd" />
 
     <LinearLayout
         android:orientation="horizontal"

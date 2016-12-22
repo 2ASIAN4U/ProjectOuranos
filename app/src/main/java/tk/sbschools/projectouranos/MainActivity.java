@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -18,7 +19,7 @@ import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
     TextView forecast, location, temp, tempHigh, tempLow;
-    ImageView display;
+    ImageView display,background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
         tempHigh = (TextView)findViewById(R.id.textView_tempHigh);
         tempLow = (TextView)findViewById(R.id.textView_tempLow);
         display = (ImageView)findViewById(R.id.imageView_display);
+
+        background = (ImageView) findViewById(R.id.ImageView_background);
+        background.setImageResource(R.drawable.rwby6);
+
+        //RelativeLayout background = (RelativeLayout)findViewById(R.id.background);
+        //background.setBackgroundResource(R.drawable.code1);
 
         WeatherThread retrieveWeatherData = new WeatherThread(forecast,location,temp,tempHigh,tempLow,display);
         retrieveWeatherData.execute("zip=08852,us");
