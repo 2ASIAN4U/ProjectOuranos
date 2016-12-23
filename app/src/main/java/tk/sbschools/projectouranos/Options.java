@@ -35,10 +35,10 @@ public class Options extends AppCompatActivity {
         prefs = this.getSharedPreferences("tk.sbschools.projectouranos",Context.MODE_PRIVATE);
         editor = prefs.edit();
 
-        themeList = (Spinner)findViewById(R.id.spinner_theme);
+        //themeList = (Spinner)findViewById(R.id.spinner_theme);
         setLocation = (EditText)findViewById(R.id.editText_location);
         locSet = (Button)findViewById(R.id.button_loc_enter);
-        themeArrList = new ArrayList<>();
+        /*themeArrList = new ArrayList<>();
         themeArrList.add("RWBY");
         themeArrList.add("Code");
 
@@ -60,13 +60,13 @@ public class Options extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
-        });
+        });*/
 
         locSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!setLocation.getText().equals("")){
-                    prefs.edit().putString("location", Uri.parse(setLocation.getText().toString()).toString()).apply();
+                    prefs.edit().putString("location", Uri.encode(setLocation.getText().toString()).toString()).apply();
                     Toast.makeText(Options.this, "Location Set: " + prefs.getString("location", "08512"), Toast.LENGTH_SHORT).show();
                 }
             }

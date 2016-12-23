@@ -9,6 +9,16 @@
     android:paddingTop="0dp"
     tools:context="tk.sbschools.projectouranos.Options">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/beacon"
+        android:id="@+id/ImageView_background"
+        android:alpha="1"
+        android:scaleType="fitEnd"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -47,49 +57,6 @@
             android:alpha="85" />
     </LinearLayout>
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LinearLayout_ChangeActivity"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="9dp"
-        android:id="@+id/textView_label_theme"
-        tools:text="Theme:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24sp"
-        android:textAlignment="textStart" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srcCompat="@drawable/code2"
-        android:id="@+id/ImageView_background"
-        android:alpha=".4"
-        android:scaleType="fitEnd"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:id="@+id/spinner_theme"
-        android:layout_below="@+id/textView_label_theme"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Location:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:id="@+id/textView_label_Loc"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="24sp"
-        android:layout_below="@+id/spinner_theme"
-        android:layout_alignStart="@+id/textView_label_theme" />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -118,5 +85,17 @@
             android:id="@+id/button_loc_enter"
             android:layout_weight="1" />
     </LinearLayout>
+
+    <TextView
+        android:text="Location:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_label_Loc"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_below="@+id/LinearLayout_ChangeActivity"
+        android:layout_alignStart="@+id/linearLayout" />
 
 </RelativeLayout>

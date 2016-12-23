@@ -13,9 +13,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/code2"
+        app:srcCompat="@drawable/beacon"
         android:id="@+id/ImageView_background"
-        android:alpha=".4"
+        android:alpha=".6"
         android:scaleType="fitEnd" />
 
     <LinearLayout
