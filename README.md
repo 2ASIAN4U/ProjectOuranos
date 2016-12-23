@@ -1,15 +1,11 @@
-# ProjectOuranos
-Android Weather App, In Progress
+# ProjectOuranos - A ScrollOS Weather App Project
+RWBY Themed Android Weather App (Indefinite Hiatus)
 
+Features: 
+Current & 5 Day forecast.
 
-TODO:
-
-5 Day Forecast
-
-More reliable Weather API
-
-Background Graphics, Material Design
-
+Todo:
 Icons
-
-Saved Locations
+Complete Graphics Overhaul
+Additional Weather Info
+Search Autocomplete
