@@ -25,12 +25,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity5day extends AppCompatActivity {
     ArrayList<String> forecast,time;
-    ArrayList<Integer> temp,high,low,imageRes;
-    ImageView background;
+    ArrayList<Integer> high,low,imageRes;
+    ArrayList<Double> temp;
+    ListView display;
+    //ImageView background;
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -40,80 +43,70 @@ public class MainActivity5day extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity5day);
 
-        prefs = this.getPreferences(Context.MODE_PRIVATE);
+        prefs = this.getSharedPreferences("tk.sbschools.projectouranos",Context.MODE_PRIVATE);
         editor = prefs.edit();
 
-        background = (ImageView) findViewById(R.id.ImageView_background);
-        background.setImageResource(R.drawable.rwby6);
+        forecast = new ArrayList<>();
+        temp = new ArrayList<>();
+        high = new ArrayList<>();
+        low = new ArrayList<>();
+        time = new ArrayList<>();
+        imageRes = new ArrayList<>();
 
-        WeatherThread retrieveWeatherData = new WeatherThread(this);
+        /*background = (ImageView) findViewById(R.id.ImageView_background);
+        if(prefs.getString("theme", "") != ""){
+            if(prefs.getString("theme", "").equals("rwby")){
+                switch((int)(Math.random()*8)+1){
+                    case 1:background.setImageResource(R.drawable.rwby1);break;
+                    case 2:background.setImageResource(R.drawable.rwby2);break;
+                    case 3:background.setImageResource(R.drawable.rwby3);break;
+                    case 4:background.setImageResource(R.drawable.rwby4);break;
+                    case 5:background.setImageResource(R.drawable.rwby5);break;
+                    case 6:background.setImageResource(R.drawable.rwby6);break;
+                    case 7:background.setImageResource(R.drawable.rwby7);break;
+                    case 8:background.setImageResource(R.drawable.rwby8);break;
+                }
+            }else{
+                switch((int)(Math.random()*8)+1){
+                    //case 1:background.setImageResource(R.drawable.code1);break;
+                    case 2:background.setImageResource(R.drawable.code2);break;
+                    case 3:background.setImageResource(R.drawable.code3);break;
+                    //case 4:background.setImageResource(R.drawable.code4);break;
+                    case 5:background.setImageResource(R.drawable.code5);break;
+                    case 6:background.setImageResource(R.drawable.code6);break;
+                    case 7:background.setImageResource(R.drawable.code7);break;
+                    case 8:background.setImageResource(R.drawable.code8);break;
+                    default:background.setImageResource(R.drawable.code7);break;
+                }
+            }
+        }else{
+            prefs.edit().putString("theme", "code").apply();;
+        }*/
+
+
+
+        WeatherThread retrieveWeatherData = new WeatherThread(this,forecast,time,high,low,imageRes,temp);
         retrieveWeatherData.execute("zip=08852,us");
-    }
 
-    public class CustomAdapter extends ArrayAdapter<String> {
-        List forecast,time;
-        List temp,high,low,imageRes;
-        Context mainContext;
-
-        public CustomAdapter(Context context, int resource, List<String> forecast, List<Double> temp, List<String> time, List<Integer> high, List<Integer> low, List<Integer> imageRes) {
-            super(context, resource, forecast);
-
-            mainContext = context;
-            this.forecast = forecast;
-            this.temp = temp;
-            this.time = time;
-            this.high = high;
-            this.low = low;
-            this.imageRes = imageRes;
-            //imageList = images;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) mainContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View layoutView = inflater.inflate(R.layout.listforecast, null);
-
-            TextView forecastView = (TextView) layoutView.findViewById(R.id.textView_forecast);
-            TextView tempView = (TextView) layoutView.findViewById(R.id.textView_temp);
-            TextView tempHighView = (TextView) layoutView.findViewById(R.id.textView_tempHigh);
-            TextView tempLowView = (TextView) layoutView.findViewById(R.id.textView_tempLow);
-            TextView timeView = (TextView) layoutView.findViewById(R.id.textView_time);
-            ImageView displayView = (ImageView) layoutView.findViewById(R.id.imageView_display);
-
-            forecastView.setText(forecast.get(position).toString());
-
-            DecimalFormat numberFormat = new DecimalFormat("#.0");
-            tempView.setText(numberFormat.format(temp.get(position)) + "°");
-
-            tempHighView.setText(high.get(position).toString() + "°");
-            tempLowView.setText(low.get(position).toString() + "°");
-            timeView.setText(time.get(position).toString());
-            displayView.setImageResource((int) imageRes.get(position));
-            //if(!imageList.isEmpty() && imageList.size()-1 > position){
-            //    imageView.setImageBitmap((Bitmap)imageList.get(position));
-            //}else {
-            //imagecache.add(position,((BitmapDrawable)imageView.getDrawable()).getBitmap());
-            //}
-
-
-            return layoutView;
-        }
     }
 
     public class WeatherThread extends AsyncTask<String, Void, JSONObject> {
+
         Context main;
         ArrayList<String> forecast, time;
         ArrayList<Integer>  high, low, imageRes;
         ArrayList<Double> temp;
 
-        public WeatherThread(Context mainThread) {
+        public WeatherThread( Context mainThread, ArrayList<String> fcast, ArrayList<String> time, ArrayList<Integer> high,
+        ArrayList<Integer> low, ArrayList<Integer> imageRes, ArrayList<Double> temp) {
             this.main = mainThread;
-            forecast = new ArrayList<>();
-            temp = new ArrayList<>();
-            high = new ArrayList<>();
-            low = new ArrayList<>();
-            time = new ArrayList<>();
-            imageRes = new ArrayList<>();
+            this.forecast = fcast;
+            this.time = time;
+            this.high = high;
+            this.low = low;
+            this.imageRes = imageRes;
+            this.temp = temp;
+
         }
 
         @Override
@@ -140,7 +133,7 @@ public class MainActivity5day extends AppCompatActivity {
 
             //super.onPostExecute(result);
             try {
-                for (int i = 0; i < 4; i++) { //
+                for (int i = 0; i < 5; i++) { //
                     JSONObject hourlyRes = result.getJSONArray("list").getJSONObject(i);
                     this.forecast.add(hourlyRes.getJSONArray("weather").getJSONObject(0).get("main").toString());
                     this.temp.add(((9 / 5) * ((double) (hourlyRes.getJSONObject("temp").get("day")) - 273.15) + 32));
@@ -248,14 +241,89 @@ public class MainActivity5day extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            CustomAdapter myAdapter = new CustomAdapter(main, R.layout.listforecast, forecast, temp, time, high, low, imageRes);
-
-            ((ListView) findViewById(R.id.listView_5day)).setAdapter(myAdapter);
+            DecimalFormat numberFormat = new DecimalFormat("#.0");
+            //Next Day
+            TextView forecastView = (TextView) findViewById(R.id.textView_forecast0);
+            TextView tempView = (TextView) findViewById(R.id.textView_temp0);
+            TextView tempHighView = (TextView) findViewById(R.id.textView_tempHigh0);
+            TextView tempLowView = (TextView) findViewById(R.id.textView_tempLow0);
+            TextView timeView = (TextView) findViewById(R.id.textView_time0);
+            ImageView displayView = (ImageView) findViewById(R.id.imageView_display0);
+            forecastView.setText(forecast.get(0).toString());
+            tempView.setText(numberFormat.format(temp.get(0)) + "°");
+            tempHighView.setText(high.get(0).toString() + "°");
+            tempLowView.setText(low.get(0).toString() + "°");
+            Date t = new Date((long)Integer.parseInt(time.get(0))*1000);
+            timeView.setText(t.toString());
+            displayView.setImageResource((int)imageRes.get(0));
+            //---------------------------------
+            forecastView = (TextView) findViewById(R.id.textView_forecast1);
+            tempView = (TextView) findViewById(R.id.textView_temp1);
+            tempHighView = (TextView) findViewById(R.id.textView_tempHigh1);
+            tempLowView = (TextView) findViewById(R.id.textView_tempLow1);
+            timeView = (TextView) findViewById(R.id.textView_time1);
+            displayView = (ImageView) findViewById(R.id.imageView_display1);
+            forecastView.setText(forecast.get(1).toString());
+            tempView.setText(numberFormat.format(temp.get(1)) + "°");
+            tempHighView.setText(high.get(1).toString() + "°");
+            tempLowView.setText(low.get(1).toString() + "°");
+            t = new Date((long)Integer.parseInt(time.get(1))*1000);
+            timeView.setText(t.toString());
+            displayView.setImageResource((int)imageRes.get(1));
+            //---------------------------------
+            forecastView = (TextView) findViewById(R.id.textView_forecast2);
+            tempView = (TextView) findViewById(R.id.textView_temp2);
+            tempHighView = (TextView) findViewById(R.id.textView_tempHigh2);
+            tempLowView = (TextView) findViewById(R.id.textView_tempLow2);
+            timeView = (TextView) findViewById(R.id.textView_time2);
+            displayView = (ImageView) findViewById(R.id.imageView_display2);
+            forecastView.setText(forecast.get(2).toString());
+            tempView.setText(numberFormat.format(temp.get(2)) + "°");
+            tempHighView.setText(high.get(2).toString() + "°");
+            tempLowView.setText(low.get(2).toString() + "°");
+            t = new Date((long)Integer.parseInt(time.get(2))*1000);
+            timeView.setText(t.toString());
+            displayView.setImageResource((int)imageRes.get(2));
+            //----------------------------------
+            forecastView = (TextView) findViewById(R.id.textView_forecast3);
+            tempView = (TextView) findViewById(R.id.textView_temp3);
+            tempHighView = (TextView) findViewById(R.id.textView_tempHigh3);
+            tempLowView = (TextView) findViewById(R.id.textView_tempLow3);
+            timeView = (TextView) findViewById(R.id.textView_time3);
+            displayView = (ImageView) findViewById(R.id.imageView_display3);
+            forecastView.setText(forecast.get(3).toString());
+            tempView.setText(numberFormat.format(temp.get(3)) + "°");
+            tempHighView.setText(high.get(3).toString() + "°");
+            tempLowView.setText(low.get(3).toString() + "°");
+            t = new Date((long)Integer.parseInt(time.get(3))*1000);
+            timeView.setText(t.toString());
+            displayView.setImageResource((int)imageRes.get(3));
+            //-----------------------------------
+            forecastView = (TextView) findViewById(R.id.textView_forecast4);
+            tempView = (TextView) findViewById(R.id.textView_temp4);
+            tempHighView = (TextView) findViewById(R.id.textView_tempHigh4);
+            tempLowView = (TextView) findViewById(R.id.textView_tempLow4);
+            timeView = (TextView) findViewById(R.id.textView_time4);
+            displayView = (ImageView) findViewById(R.id.imageView_display4);
+            forecastView.setText(forecast.get(4).toString());
+            tempView.setText(numberFormat.format(temp.get(4)) + "°");
+            tempHighView.setText(high.get(4).toString() + "°");
+            tempLowView.setText(low.get(4).toString() + "°");
+            t = new Date((long)Integer.parseInt(time.get(4))*1000);
+            timeView.setText(t.toString());
+            displayView.setImageResource((int)imageRes.get(4));
         }
     }
     public void gotoForecast(View view){
         Intent i = new Intent(this, MainActivity.class);
         //i.putExtra(NAMELIST, nameList);
         startActivityForResult(i, 1);
+        finish();
+    }
+    public void gotoOptions(View view){
+        Intent i = new Intent(this, Options.class);
+        //i.putExtra(NAMELIST, nameList);
+        startActivityForResult(i, 1);
+        finish();
     }
 }

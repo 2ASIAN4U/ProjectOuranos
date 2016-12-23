@@ -1,6 +1,8 @@
 package tk.sbschools.projectouranos;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,11 +23,17 @@ public class MainActivity extends AppCompatActivity {
     TextView forecast, location, temp, tempHigh, tempLow;
     ImageView display,background;
 
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
          //https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='08852')&format=json
+
+        prefs = this.getSharedPreferences("tk.sbschools.projectouranos",Context.MODE_PRIVATE);
+        editor = prefs.edit();
 
         forecast = (TextView)findViewById(R.id.textView_forcast);
         location = (TextView)findViewById(R.id.textView_location);
@@ -34,14 +42,42 @@ public class MainActivity extends AppCompatActivity {
         tempLow = (TextView)findViewById(R.id.textView_tempLow);
         display = (ImageView)findViewById(R.id.imageView_display);
 
-        background = (ImageView) findViewById(R.id.ImageView_background);
-        background.setImageResource(R.drawable.rwby6);
+        /*background = (ImageView) findViewById(R.id.ImageView_background);
+        if(prefs.getString("theme", "") != ""){
+            if(prefs.getString("theme", "").equals("rwby")){
+                System.out.println("RWBY Theme");
+                switch((int)(Math.random()*8)+1){
+                    case 1:background.setImageResource(R.drawable.rwby1);break;
+                    case 2:background.setImageResource(R.drawable.rwby2);break;
+                    case 3:background.setImageResource(R.drawable.rwby3);break;
+                    case 4:background.setImageResource(R.drawable.rwby4);break;
+                    case 5:background.setImageResource(R.drawable.rwby5);break;
+                    case 6:background.setImageResource(R.drawable.rwby6);break;
+                    case 7:background.setImageResource(R.drawable.rwby7);break;
+                    case 8:background.setImageResource(R.drawable.rwby8);break;
+                }
+            }else{
+                switch((int)(Math.random()*8)+1){
+                    //case 1:background.setImageResource(R.drawable.code1);break;
+                    case 2:background.setImageResource(R.drawable.code2);break;
+                    case 3:background.setImageResource(R.drawable.code3);break;
+                    //case 4:background.setImageResource(R.drawable.code4);break;
+                    case 5:background.setImageResource(R.drawable.code5);break;
+                    case 6:background.setImageResource(R.drawable.code6);break;
+                    case 7:background.setImageResource(R.drawable.code7);break;
+                    case 8:background.setImageResource(R.drawable.code8);break;
+                    default:background.setImageResource(R.drawable.code7);break;
+                }
+            }
+        }else{
+            prefs.edit().putString("theme", "code").apply();;
+        }*/
 
         //RelativeLayout background = (RelativeLayout)findViewById(R.id.background);
         //background.setBackgroundResource(R.drawable.code1);
 
         WeatherThread retrieveWeatherData = new WeatherThread(forecast,location,temp,tempHigh,tempLow,display);
-        retrieveWeatherData.execute("zip=08852,us");
+        retrieveWeatherData.execute("q="+prefs.getString("location", "08512")+",us");
     }
 
     public class WeatherThread extends AsyncTask<String,Void,JSONObject>{
@@ -160,5 +196,12 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, MainActivity5day.class);
         //i.putExtra(NAMELIST, nameList);
         startActivityForResult(i, 1);
+        finish();
+    }
+    public void gotoOptions(View view){
+        Intent i = new Intent(this, Options.class);
+        //i.putExtra(NAMELIST, nameList);
+        startActivityForResult(i, 1);
+        finish();
     }
 }

@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/code1"
+        app:srcCompat="@drawable/code2"
         android:id="@+id/ImageView_background"
         android:alpha=".4"
         android:scaleType="fitEnd" />
@@ -52,7 +52,8 @@
             android:id="@+id/button_misc"
             android:layout_weight=".33"
             android:background="@android:color/holo_blue_light"
-            android:alpha="85" />
+            android:alpha="85"
+            android:onClick="gotoOptions" />
     </LinearLayout>
 
     <LinearLayout

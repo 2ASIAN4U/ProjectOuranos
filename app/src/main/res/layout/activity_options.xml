@@ -1,0 +1,122 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    tools:context="tk.sbschools.projectouranos.Options">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/LinearLayout_ChangeActivity">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Current"
+            android:id="@+id/button_current"
+            android:layout_weight=".33"
+            android:background="@android:color/holo_blue_light"
+            android:alpha="85"
+            android:onClick="gotoForecast" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="5 Day"
+            android:id="@+id/button_5day"
+            android:layout_weight=".33"
+            android:background="@android:color/holo_blue_light"
+            android:alpha="85"
+            android:onClick="goto5Day" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Misc."
+            android:id="@+id/button_misc"
+            android:layout_weight=".33"
+            android:background="@android:color/holo_blue_dark"
+            android:alpha="85" />
+    </LinearLayout>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayout_ChangeActivity"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="9dp"
+        android:id="@+id/textView_label_theme"
+        tools:text="Theme:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        android:textAlignment="textStart" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/code2"
+        android:id="@+id/ImageView_background"
+        android:alpha=".4"
+        android:scaleType="fitEnd"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:id="@+id/spinner_theme"
+        android:layout_below="@+id/textView_label_theme"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Location:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:id="@+id/textView_label_Loc"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp"
+        android:layout_below="@+id/spinner_theme"
+        android:layout_alignStart="@+id/textView_label_theme" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_label_Loc"
+        android:layout_alignParentStart="true"
+        android:padding="0dp"
+        android:layout_marginLeft="12dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:layout_below="@+id/textView_label_Loc"
+            android:layout_alignStart="@+id/textView_label_Loc"
+            android:layout_marginTop="0dp"
+            android:id="@+id/editText_location"
+            android:layout_weight="1"
+            android:contentDescription="Location" />
+
+        <Button
+            android:text="Set Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_loc_enter"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</RelativeLayout>
