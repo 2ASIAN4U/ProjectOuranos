@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
-    TextView forecast, location, temp, tempHigh, tempLow;
+    TextView forecast, location, temp, tempHigh, tempLow, quote;
     ImageView display,background;
 
     SharedPreferences prefs;
@@ -31,9 +31,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
          //https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='08852')&format=json
-
         prefs = this.getSharedPreferences("tk.sbschools.projectouranos",Context.MODE_PRIVATE);
         editor = prefs.edit();
+
+        this.setTitle("CCT Weather Report");
 
         forecast = (TextView)findViewById(R.id.textView_forcast);
         location = (TextView)findViewById(R.id.textView_location);
@@ -43,41 +44,12 @@ public class MainActivity extends AppCompatActivity {
         display = (ImageView)findViewById(R.id.imageView_display);
 
         /*background = (ImageView) findViewById(R.id.ImageView_background);
-        if(prefs.getString("theme", "") != ""){
-            if(prefs.getString("theme", "").equals("rwby")){
-                System.out.println("RWBY Theme");
-                switch((int)(Math.random()*8)+1){
-                    case 1:background.setImageResource(R.drawable.rwby1);break;
-                    case 2:background.setImageResource(R.drawable.rwby2);break;
-                    case 3:background.setImageResource(R.drawable.rwby3);break;
-                    case 4:background.setImageResource(R.drawable.rwby4);break;
-                    case 5:background.setImageResource(R.drawable.rwby5);break;
-                    case 6:background.setImageResource(R.drawable.rwby6);break;
-                    case 7:background.setImageResource(R.drawable.rwby7);break;
-                    case 8:background.setImageResource(R.drawable.rwby8);break;
-                }
-            }else{
-                switch((int)(Math.random()*8)+1){
-                    //case 1:background.setImageResource(R.drawable.code1);break;
-                    case 2:background.setImageResource(R.drawable.code2);break;
-                    case 3:background.setImageResource(R.drawable.code3);break;
-                    //case 4:background.setImageResource(R.drawable.code4);break;
-                    case 5:background.setImageResource(R.drawable.code5);break;
-                    case 6:background.setImageResource(R.drawable.code6);break;
-                    case 7:background.setImageResource(R.drawable.code7);break;
-                    case 8:background.setImageResource(R.drawable.code8);break;
-                    default:background.setImageResource(R.drawable.code7);break;
-                }
-            }
-        }else{
-            prefs.edit().putString("theme", "code").apply();;
+
+" It's true that a simple spark can ignite hope, breathe fire in to the hearts of the weary"
         }*/
 
-        //RelativeLayout background = (RelativeLayout)findViewById(R.id.background);
-        //background.setBackgroundResource(R.drawable.code1);
-
         WeatherThread retrieveWeatherData = new WeatherThread(forecast,location,temp,tempHigh,tempLow,display);
-        retrieveWeatherData.execute("q="+prefs.getString("location", "08512")+",us");
+        retrieveWeatherData.execute("q="+prefs.getString("location", "08512"));
     }
 
     public class WeatherThread extends AsyncTask<String,Void,JSONObject>{
@@ -123,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
                     this.fcast.setText(main.getJSONObject("item").getJSONObject("condition").get("text").toString());
                     this.loc.setText(main.getJSONObject("location").get("city").toString() + ", " + main.getJSONObject("location").get("region").toString());
                     this.temp.setText(main.getJSONObject("item").getJSONObject("condition").get("temp").toString() + "°");
-                    this.tempHigh.setText(main.getJSONObject("item").getJSONObject("forecast").getJSONObject("0").get("high").toString() + "°");
-                    this.tempLow.setText(main.getJSONObject("item").getJSONObject("forecast").getJSONObject("0").get("low").toString() + "°");
+                    this.tempHigh.setText(main.getJSONObject("item").getJSONArray("forecast").getJSONObject(0).get("high").toString() + "°");
+                    this.tempLow.setText(main.getJSONObject("item").getJSONArray("forecast").getJSONObject(0).get("low").toString() + "°");
                 }*/
                 this.fcast.setText(result.getJSONArray("weather").getJSONObject(0).get("main").toString());
                 this.loc.setText(result.get("name").toString());
@@ -138,49 +110,72 @@ public class MainActivity extends AppCompatActivity {
                 this.tempHigh.setText(numberFormat.format(recivTempMax) + "°");
                 this.tempLow.setText(numberFormat.format(recivTempMin) + "°");
 
+                TextView quote = (TextView)findViewById(R.id.textView_quote);
+
                 switch ((int)result.getJSONArray("weather").getJSONObject(0).get("id")){
                     //ThunderStorm
-                    case 200:case 201:case 202:case 210:case 211:case 212:case 221:case 230:case 231:case 232:
+                    case 200:case 201:case 202:case 210:case 211:case 212:case 221:case 230:case 231:case 232: {
                         dispIcon.setImageResource(R.drawable.storm);
-                        break;
+                        quote.setText("\"Nora, get to the mountain!\"");
+                    }break;
                     //Drizzle
-                    case 300:case 301:case 302:case 310:case 311:case 312:case 313:case 314:case 321:
+                    case 300:case 301:case 302:case 310:case 311:case 312:case 313:case 314:case 321:{
                         dispIcon.setImageResource(R.drawable.rain_thin);
-                        break;
+                        quote.setText("\"Looks like the Spring Maiden is back...\"");
+                    }break;
                     //rain
-                    case 500:case 501:case 502:case 503:case 504:
+                    case 500:case 501:case 502:case 503:case 504:{
                         dispIcon.setImageResource(R.drawable.rain);
-                        break;
+                        quote.setText("\"Ooh, it's raining... HEY! Where are you going Neptune!\"");
+                    }break;
                     //FreezingRain
-                    case 511: dispIcon.setImageResource(R.drawable.snow_thin); break;
+                    case 511:{
+                        dispIcon.setImageResource(R.drawable.snow_thin);
+                        quote.setText("\"What did you do the the rain, Ice Queen?\"");
+                    }break;
                     //Shower
-                    case 520:case 521:case 522:case 531:
+                    case 520:case 521:case 522:case 531:{
                         dispIcon.setImageResource(R.drawable.rain_thin);
-                        break;
+                        quote.setText("\"Ooh, it's raining... HEY! Where are you going Neptune!\"");
+                    }break;
                     //Snow
-                    case 600:case 601:case 602:case 611:case 612:case 615:case 616:case 620:case 621:case 622:
+                    case 600:case 601:case 602:case 611:case 612:case 615:case 616:case 620:case 621:case 622:{
                         dispIcon.setImageResource(R.drawable.snow);
-                        break;
+                        quote.setText("\"It's all frozen over. I blame Weiss. 'Hey!'\"");
+                    }break;
                     //Atmosphere Light
-                    case 701:case 711:case 721:
+                    case 701:case 711:case 721:{
                         dispIcon.setImageResource(R.drawable.haze_thin);
-                        break;
+                        quote.setText("\"Team Attack: Freezerburn!\"");
+                    }break;
                     //Atmosphere Dark (Emergency)
-                    case 731:case 741:case 751:case 761:case 762:case 771:
+                    case 731:case 741:case 751:case 761:case 762:case 771:{
                         dispIcon.setImageResource(R.drawable.haze);
-                        break;
+                        quote.setText("\"If I don't get doilies, you don't get fog machines.\"");
+                    }break;
                     //Tornado Watch
-                    case 781: dispIcon.setImageResource(R.drawable.tornado); break;
+                    case 781:{
+                        dispIcon.setImageResource(R.drawable.tornado);
+                        quote.setText("\"Alert: Threat Level 9. Please seek shelter in a calm and orderly manner.\"");
+                    } break;
                     //Clear
-                    case 800: dispIcon.setImageResource(R.drawable.sun);break;
+                    case 800:{
+                        dispIcon.setImageResource(R.drawable.sun);
+                        quote.setText("\"It's great outside, gets go Grimm hunting!\"");
+                    }break;
                     //Clouds
-                    case 801:case 802:
+                    case 801:case 802:{
                         dispIcon.setImageResource(R.drawable.cloud_thin);
-                        break;
-                    case 803:case 804:
+                        quote.setText("\"Cloudy with a chance of nevermores.\"");
+                    }break;
+                    case 803:case 804:{
                         dispIcon.setImageResource(R.drawable.cloud);
-                        break;
-                    default: dispIcon.setImageResource(R.drawable.danger); break;
+                        quote.setText("\"Cloudy with a chance of nevermores.\"");
+                    }break;
+                    default:{
+                        dispIcon.setImageResource(R.drawable.danger);
+                        quote.setText("\"Alert: Threat Level 9. Please seek shelter in a calm and orderly manner.\"");
+                    }break;
                 }
             }catch(JSONException e){
                 e.printStackTrace();
